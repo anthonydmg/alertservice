@@ -21,7 +21,6 @@
   <body>
     {% include 'partials/_navbar.html' %}
     <h1 id = "titulo"> Deteccion de Incendios (No Iniciada) </h1>
-    <button type="button" id = "start"> Iniciar Deteccion </button>
     <p></p>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" integrity="sha512-894YE6QWD5I59HgZOGReFYm4dnWc1Qt5NtvYSaNcOP+u1T9qYdvdihz0PPSiiqn/+/3e7Jo4EaG7TubfWGUrMQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <script src="https://cdn.socket.io/4.5.0/socket.io.min.js" integrity="sha384-7EyYLQZgWBi67fBtVxw60/OWl1kjsfrPFcaU0pp0nAh+i8FD068QogUvg85Ewy1k" crossorigin="anonymous"></script>
@@ -34,7 +33,7 @@
         socket.on('startFireDetection', function (msg){
           console.log(msg)
           $('#titulo').text('Deteccion de Incendios (Iniciada)')
-          $("p").append("Buscando...");
+          $("p").text("Buscando...");
         })
                 
         socket.on('fireDetected', function (msg){
@@ -52,24 +51,14 @@
         socket.on('stopFireDetection', function (msg){
           console.log(msg)
           $('#titulo').text('Deteccion de Incendios (Finalizada)')
+          $("p").text("");
         })
-
       })
-
-      $('#start').on('click', function (){
-          socket.emit('startFireDetection','Comenzar Deteccion')
-        })
 
       socket.on('disconnect', function(){
         console.log("Desconectados")
       })
-      
     
-      
-    
-
-    
-
     </script>
     
   </body>
