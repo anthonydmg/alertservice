@@ -1,11 +1,11 @@
 
-from flask import Blueprint, jsonify, request
+from flask import Blueprint, jsonify, request, render_template
 
 alerts  = Blueprint("alerts", __name__)
 
 @alerts.route("/")
 def home():
-    return "Home"
+    return render_template('home.html')
 
 @alerts.route('/api/alert', methods = ["POST"])
 def alert():
