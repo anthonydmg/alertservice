@@ -22,4 +22,7 @@ def stopFireDetection(msg):
 @socketio.on('fireDetected')
 def fireDetected(data):
     print('Data: ', data)
+    maxTemperature = msg['maxTemperature']
+    date = msg['time']
+    
     emit('fireDetected',data, broadcast  = True)
