@@ -39,12 +39,13 @@
         socket.on('fireDetected', function (msg){
           console.log(msg)
           $('#titulo').text('Fuego Detectado! ⚠')
-          $("p").text(`
-            Temperatura maxima alcanzada: 180 C
-            Lat:
-            Alt:
-            Distancia:
-            Area de region incendiada: 
+          $("p").append(`
+            <b>Temperatura maxima alcanzada: ${msg['maxTemperature']} </b><br/>
+            <b>Latitud: 40.7127837 </b><br/>
+            <b>Longitud: -74.0059413</b><br/>
+            <b>Distancia: 10m </b><br/>
+            <b>Area de region incendiada: 1m </p><br/>
+            <b>Fecha y Hora: ${msg['time']}</p><br/>
           `);
         })
         

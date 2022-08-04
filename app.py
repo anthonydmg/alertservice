@@ -20,6 +20,6 @@ def stopFireDetection(msg):
     emit('stopFireDetection',msg, broadcast  = True)
 
 @socketio.on('fireDetected')
-def startFireDetection(data):
-    print('Message: ' + data)
+def fireDetected(data):
+    print('Data: ', data)
     emit('fireDetected',data, broadcast  = True)
