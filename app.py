@@ -1,6 +1,6 @@
 from flask import Flask
 from flask_socketio import SocketIO, send, emit
-from db.init import insertDataAlerDb
+#from db.init import insertDataAlerDb
 from routes.alerts import alerts
 app = Flask(__name__)
 
@@ -29,7 +29,7 @@ def fireDetected(data):
     altura =  str(data['distance'])
     print(maxTemperature)
     date = data['time']
-    insertDataAlerDb(maxTemperature, latitud, longitud, altura, areaFire)
+    #insertDataAlerDb(maxTemperature, latitud, longitud, altura, areaFire)
     print(date)
     emit('fireDetected',data, broadcast  = True)
 
