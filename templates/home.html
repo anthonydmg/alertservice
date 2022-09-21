@@ -33,24 +33,52 @@
         socket.on('startFireDetection', function (msg){
           console.log(msg)
           $('#titulo').text('Deteccion de Incendios (Iniciada)')
-          $("p").text("Buscando...");
-        })
-                
-        socket.on('fireDetected', function (msg){
-          console.log(msg)
-          $('#titulo').text('Fuego Detectado! ⚠')
           $("p").append(`
-            <b>Temperatura maxima alcanzada: ${msg['maxTemperature']} </b><br/>
-            <b>Latitud: 40.7127837 </b><br/>
-            <b>Longitud: -74.0059413</b><br/>
-            <b>Distancia: 10m </b><br/>
-            <b>Area de region incendiada: 1m </p><br/>
-            <b>Fecha y Hora: ${msg['time']}</p><br/>
+          <div class = "searching">
+            <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+            Buscando...
+          </div>
+          `);
+        })
+
+        socket.on('fireDetected', function (data){
+          console.log(data)
+          $( ".searching" ).remove()
+          $('#titulo').text('Fuego Detectado! ⚠')
+          $("p").text("");
+          $("p").append(`
+            <table class="table">
+              <tbody>
+                <tr>
+                  <th>Temperatura maxima alcanzada</td>
+                  <td>${data['maxTemperature']}</td>
+                </tr>
+                <tr>
+                  <th>Latitud</td>
+                  <td>${data['latitud']}</td>
+                </tr>
+                <tr>
+                  <th>Longitud</td>
+                  <td>${data['longitud']}</td>
+                </tr>
+                <tr>
+                  <th>Altura</td>
+                  <td>${data['distance']}</td>
+                </tr>
+                <tr>
+                  <th>Area de region incendiada</td>
+                  <td>${data['areaFire']}</td>
+                </tr>
+                <tr>
+                  <th>Fecha y Hora</td>
+                  <td>${data['time']}</td>
+                </tr>
+              </tbody>
           `);
         })
         
-        socket.on('stopFireDetection', function (msg){
-          console.log(msg)
+        socket.on('stopFireDetection', function (data){
+          console.log(data)
           $('#titulo').text('Deteccion de Incendios (Finalizada)')
           $("p").text("");
         })
