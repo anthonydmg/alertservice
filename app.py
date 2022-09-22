@@ -1,3 +1,4 @@
+from calendar import day_abbr
 from flask import Flask
 from flask_socketio import SocketIO, send, emit
 #from db.init import insertDataAlerDb
@@ -36,3 +37,4 @@ def fireDetected(data):
 @socketio.on('radarDistance')
 def radarDistance(data):
     print("Data: ", data)
+    emit("radarDistance", data, broadcast = True)
