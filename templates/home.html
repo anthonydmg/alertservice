@@ -82,6 +82,11 @@
           $('#titulo').text('Deteccion de Incendios (Finalizada)')
           $("p").text("");
         })
+
+        socket.on('radarDistance', function (data){
+          console.log("radarDistance: ", data)
+   
+        })
       })
 
       socket.on('disconnect', function(){
