@@ -1,7 +1,10 @@
 
 from flask import Blueprint, jsonify, request, render_template
+import os 
 
-alerts  = Blueprint("alerts", __name__)
+alerts  = Blueprint("alerts", __name__, static_folder = 'static')
+
+IMG_FOLDER = os.path.join('static', 'images')
 
 @alerts.route("/")
 def home():
