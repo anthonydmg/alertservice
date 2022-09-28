@@ -20,70 +20,96 @@
   </head>
   <body>
     {% include 'partials/_navbar.html' %}
-    <h1 id = "titulo" class="display-2 text-center"> Deteccion de Incendios (No Iniciada) </h1>
-    <p  class="text-center"></p>
-    <img src="../images/dronfire.png" alt="Trulli" width="500" height="333">
+    
+    <div class="d-flex justify-content-center align-items-center min-vh-100">
+      <div id = "container" >
+        <div class="text-center"> 
+          <img src="/static/images/dronIcon.png" alt="drone" width="200" height="150">
+          <h1 id = "titulo" style="margin-bottom: 30px"> Deteccion de Incendios no ha sido Iniciada </h1>
+        </div>
+      </div>
+    </div>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" integrity="sha512-894YE6QWD5I59HgZOGReFYm4dnWc1Qt5NtvYSaNcOP+u1T9qYdvdihz0PPSiiqn/+/3e7Jo4EaG7TubfWGUrMQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <script src="https://cdn.socket.io/4.5.0/socket.io.min.js" integrity="sha384-7EyYLQZgWBi67fBtVxw60/OWl1kjsfrPFcaU0pp0nAh+i8FD068QogUvg85Ewy1k" crossorigin="anonymous"></script>
-    
-
     <script>
       const socket = io();
       
       socket.on('connect', function(){
         console.log('Conectados')
-       
+        
+  
+
         socket.on('startFireDetection', function (msg){
           console.log(msg)
-          $('#titulo').text('Deteccion de Incendios (Iniciada)')
-          $("p").append(`
-          <div class = "searching">
-            <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
-            Buscando...
+          $( "#searching" ).remove()
+          $( "#alertBloack" ).remove()
+          $('#titulo').text('Deteccion de Incendios Iniciada')
+          $("#container").append(`
+          <div id = "searching" class = "d-flex align-items-center justify-content-around">
+            <strong class = "h4">Buscando...</strong>
+            <div class="spinner-border" style="width: 2rem; height: 2rem;" role="status">
+              <span class="sr-only"></span>
+            </div>
           </div>
           `);
         })
 
         socket.on('fireDetected', function (data){
           console.log(data)
-          $( ".searching" ).remove()
-          $('#titulo').text('Fuego Detectado! ⚠')
-          $("p").text("");
-          $("p").append(`
-            <table class="table">
-              <tbody>
-                <tr>
-                  <th>Temperatura maxima alcanzada</td>
-                  <td>${data['maxTemperature']}</td>
-                </tr>
-                <tr>
-                  <th>Latitud</td>
-                  <td>${data['latitud']}</td>
-                </tr>
-                <tr>
-                  <th>Longitud</td>
-                  <td>${data['longitud']}</td>
-                </tr>
-                <tr>
-                  <th>Altura</td>
-                  <td>${data['distance']}</td>
-                </tr>
-                <tr>
-                  <th>Area de region incendiada</td>
-                  <td>${data['areaFire']}</td>
-                </tr>
-                <tr>
-                  <th>Fecha y Hora</td>
-                  <td>${data['time']}</td>
-                </tr>
-              </tbody>
-          `);
+          $( "#searching" ).remove()
+          $(".alertBloack").remove();
+          $("h1").text("")
+
+          let alertImage = "alert-red.png" 
+
+          if (data['levelAlert'] === "ORANGE"){
+            alertImage = "alert-yelow.png"
+          }
+
+          $("#container").append(`
+            <div id = "alertBloack"  class="d-flex justify-content-center align-items-center"> 
+              <img src="/static/images/${alertImage}" alt="alert" width="350" height="350">
+              
+              <div class="text-center" style = "margin-left: 55px"> 
+                <p class="lead"> Fuego ha sido detectado en la siguiente ubicacion: </p>
+                <table class="table">
+                  <tbody>
+                    <tr>
+                      <th>Latitud</td>
+                      <td>${data['latitud']}</td>
+                    </tr>
+                    <tr>
+                      <th>Longitud</td>
+                      <td>${data['longitud']}</td>
+                    </tr>
+                    <tr>
+                      <th>Altura</td>
+                      <td>${data['distance']}</td>
+                    </tr>
+                    <tr>
+                      <th>Area de region incendiada</td>
+                      <td>${data['areaFire']} m</td>
+                    </tr>
+                    <tr>
+                      <th>Fecha y Hora</td>
+                      <td>${data['time']}</td>
+                    </tr>
+                    <tr>
+                      <th>Temperatura maxima alcanzada</td>
+                      <td>${data['maxTemperature']}</td>
+                    </tr>
+                  </tbody>
+              </div>
+            </div>  
+          `)
+
+
         })
         
         socket.on('stopFireDetection', function (data){
           console.log(data)
-          $('#titulo').text('Deteccion de Incendios (Finalizada)')
-          $("p").text("");
+          $( "#searching" ).remove()
+          $('#titulo').text('Deteccion de Incendios ha Finalizado')
         })
 
         socket.on('radarDistance', function (data){
