@@ -1,0 +1,13 @@
+Traceback (most recent call last):
+  File "/home/pi/Documentos/Anthony/alertservice/index.py", line 1, in <module>
+    from app import app, socketio
+  File "/home/pi/Documentos/Anthony/alertservice/app.py", line 2, in <module>
+    from flask import Flask
+ModuleNotFoundError: No module named 'flask'
+WebSocket transport not available. Install simple-websocket for improved performance.
+Traceback (most recent call last):
+  File "/home/pi/Documentos/Anthony/alertservice/index.py", line 4, in <module>
+    socketio.run(app, host='0.0.0.0' , port=5055 ,debug= True)
+  File "/home/pi/Documentos/Anthony/alertservice/venv/lib/python3.9/site-packages/flask_socketio/__init__.py", line 639, in run
+    raise RuntimeError('The Werkzeug web server is not '
+RuntimeError: The Werkzeug web server is not designed to run in production. Pass allow_unsafe_werkzeug=True to the run() method to disable this error.
