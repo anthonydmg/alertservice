@@ -26,6 +26,9 @@
         <div class="text-center"> 
           <img src="/static/images/dronIcon.png" alt="drone" width="200" height="150">
           <h1 id = "titulo" style="margin-bottom: 30px"> Deteccion de Incendios no ha sido Iniciada </h1>
+          <button id="btn_run" class="btn btn-danger btn-lg">
+            Iniciar Deteccion
+          </button>
         </div>
       </div>
     </div>
@@ -36,21 +39,26 @@
       
       socket.on('connect', function(){
         console.log('Conectados')
-        
   
-
         socket.on('startFireDetection', function (msg){
           console.log(msg)
           $( "#searching" ).remove()
           $( "#alertBloack" ).remove()
+          //$(".button_start" ).remove()
           $('#titulo').text('Deteccion de Incendios Iniciada')
+          $('#btn_run').text("Finalizar Detection")
+          document.getElementById("btn_run").removeEventListener("click", start_detection)
+          document.getElementById("btn_run").addEventListener("click", stop_detection)
+          
           $("#container").append(`
-          <div id = "searching" class = "d-flex align-items-center justify-content-around">
-            <strong class = "h4">Buscando...</strong>
-            <div class="spinner-border" style="width: 2rem; height: 2rem;" role="status">
-              <span class="sr-only"></span>
+          <div class = "d-flex flex-column justify-content-center mt-10">
+            <div id = "searching" class = "d-flex align-items-center justify-content-around">
+              <strong class = "h4">Buscando...</strong>
+              <div class="spinner-border" style="width: 2rem; height: 2rem;" role="status">
+                <span class="sr-only"></span>
+              </div>
             </div>
-          </div>
+   
           `);
         })
 
@@ -62,7 +70,7 @@
 
           let alertImage = "alert-red.png" 
 
-          if (data['levelAlert'] === "ORANGE"){
+          if ( parseFloat(data['prob']) <= 0.5 ){
             alertImage = "alert-yelow.png"
           }
 
@@ -113,12 +121,12 @@
         socket.on('stopFireDetection', function (data){
           console.log(data)
           $( "#searching" ).remove()
+          $(".button_stop" ).remove()
           $('#titulo').text('Deteccion de Incendios ha Finalizado')
         })
 
         socket.on('radarDistance', function (data){
           console.log("radarDistance: ", data)
-   
         })
       })
 
@@ -126,6 +134,54 @@
         console.log("Desconectados")
       })
     
+      function start_detection(){
+        $.post("/detection/start", {})
+      }
+
+      function stop_detection(){
+        $( "#searching" ).remove()
+        $(".button_stop" ).remove()
+        $('#titulo').text('Deteccion de Incendios ha Finalizado')
+        $('#btn_run').remove()
+        $.post("/detection/stop", {})
+      }
+
+      document.getElementById("btn_run").addEventListener("click", start_detection)
+
+      $.ajax({
+        type : "POST",
+        contentType : "application/json",
+        url: "detection/status",
+        dataType: 'json',
+        data : JSON.stringify({}),
+        success : (data) => {
+          let running =  data["running"]
+          if (running){
+            $( "#searching" ).remove()
+            $( "#alertBloack" ).remove()
+            //$(".button_start" ).remove()
+            $('#titulo').text('Deteccion de Incendios Iniciada')
+            $('#btn_run').text("Finalizar Detection")
+            document.getElementById("btn_run").removeEventListener("click", start_detection)
+            document.getElementById("btn_run").addEventListener("click", stop_detection)
+            
+            $("#container").append(`
+            <div class = "d-flex flex-column justify-content-center">
+              <div id = "searching" class = "d-flex align-items-center justify-content-around">
+                <strong class = "h4">Buscando...</strong>
+                <div class="spinner-border" style="width: 2rem; height: 2rem;" role="status">
+                  <span class="sr-only"></span>
+                </div>
+              </div>
+    
+            `);
+          }
+        },
+        error : (data) => {
+            console.log(data)
+            
+        }
+      })
     </script>
     
   </body>
