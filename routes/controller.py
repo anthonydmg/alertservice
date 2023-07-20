@@ -31,7 +31,7 @@ class ControllerFFD():
         print("Init Altimeter: ", output_process)
         confirmation_text = "El punto de referencia se inicializo correctamente"
         if confirmation_text in output_process:
-            matches = re.findall("Altura: \d\.\d+", output_process)
+            matches = re.findall("Altura: -?\d\.\d+", output_process)
             print(matches)
             print("\nTodo correcto")
         else:
