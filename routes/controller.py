@@ -32,10 +32,11 @@ class ControllerFFD():
         confirmation_text = "El punto de referencia se inicializo correctamente"
         if confirmation_text in output_process:
             matches = re.findall("Altura: -?\d\.\d+", output_process)
-            print(matches)
-            print("\nTodo correcto")
+            altura = float(matches[0].replace("Altura: ", ""))
+            return altura
         else:
             print("Algo salio mal")
+            return None
     def stop(self):
         if self.is_running():
             self.current_process.send_signal(subprocess.signal.SIGINT)
