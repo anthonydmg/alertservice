@@ -1,6 +1,7 @@
 import subprocess
 from dotenv import load_dotenv
 import os
+import re
 
 load_dotenv()
 
@@ -30,6 +31,8 @@ class ControllerFFD():
         print("Init Altimeter: ", output_process)
         confirmation_text = "El punto de referencia se inicializo correctamente"
         if confirmation_text in output_process:
+            matches = re.findall("Altura: \d\.\d+")
+            print(matches)
             print("\nTodo correcto")
         else:
             print("Algo salio mal")
