@@ -25,7 +25,7 @@ class ControllerFFD():
         print("current_process: ", self.current_process)    
     
     def run_initialize_altimeter(self):
-        process_init_alt = subprocess.run([PYTHON_INTERPRETER, self.script_altimeter, "--init True"], capture_output = True, text= True)
+        process_init_alt = subprocess.run([PYTHON_INTERPRETER, self.script_altimeter, "--init", True], capture_output = True, text= True)
         print("Init Altimeter: ", process_init_alt)
 
     def stop(self):
