@@ -33,6 +33,7 @@ class ControllerFFD():
         if confirmation_text in output_process:
             matches = re.findall("Altura: -?\d\.\d+", output_process)
             altura = float(matches[0].replace("Altura: ", ""))
+            print("altura:", altura)
             return altura
         else:
             print("Algo salio mal")
