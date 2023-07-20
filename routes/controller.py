@@ -6,11 +6,13 @@ load_dotenv()
 
 PYTHON_INTERPRETER = os.getenv("PYTHON_INTERPRETER")
 FIRE_DETECTION_SYSTEM_SCRIPT = os.getenv("FIRE_DETECTION_SYSTEM_SCRIPT")
+ALTIMETER_INITIALIZE_SCRIPT = os.getenv("ALTIMETER_INITIALIZE_SCRIPT")
 
 class ControllerFFD():
     def __init__(self):
         self.current_process = None
         self.script = FIRE_DETECTION_SYSTEM_SCRIPT
+        self.script_altimeter = ALTIMETER_INITIALIZE_SCRIPT
     
     def is_running(self):
         return self.current_process and self.current_process.returncode is None
@@ -22,6 +24,10 @@ class ControllerFFD():
         self.current_process = subprocess.Popen([PYTHON_INTERPRETER, self.script])
         print("current_process: ", self.current_process)    
     
+    def run_initialize_altimeter(self):
+        process_init_alt = subprocess.Popen([ALTIMETER_INITIALIZE_SCRIPT, self.script_altimeter, "--init True"], capture_output = True, text= True)
+        print("Init Altimeter: ", process_init_alt)
+
     def stop(self):
         if self.is_running():
             self.current_process.send_signal(subprocess.signal.SIGINT)
@@ -30,4 +36,5 @@ class ControllerFFD():
 
 if __name__  == "__main__":
     controller = ControllerFFD()
-    controller.run()
+    controller.run_initialize_altimeter()
+    #controller.run()
