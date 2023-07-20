@@ -26,9 +26,10 @@ class ControllerFFD():
     
     def run_initialize_altimeter(self):
         process_init_alt = subprocess.run([PYTHON_INTERPRETER, self.script_altimeter, "--init", "True"], capture_output = True, text= True)
-        print("Init Altimeter: ", process_init_alt.stdout)
-        confirmation_text = "El punto de referencia de inicializo correctamente"
-        if confirmation_text in process_init_alt.stdout:
+        output_process = str(process_init_alt.stdout)
+        print("Init Altimeter: ", output_process)
+        confirmation_text = "El punto de referencia se inicializo correctamente"
+        if confirmation_text in output_process:
             print("\nTodo correcto")
         else:
             print("Algo salio mal")
