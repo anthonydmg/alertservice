@@ -23,6 +23,17 @@ def startFireDetection(msg):
     #running = True
     emit('startFireDetection',msg, broadcast  = True)
 
+@socketio.on('pingStatus')
+def pingStatusFireDectection(msg):
+    print('Message: ' + msg)
+    emit("pingStatus", msg, broadcast = True)
+
+
+@socketio.on('pongStatus')
+def pongStatusFireDectection(msg):
+    print('Message: ' + msg)
+    emit("pongStatus", msg, broadcast = True)
+
 @socketio.on('stopFireDetection')
 def stopFireDetection(msg):
     print('Message: ' + msg)
