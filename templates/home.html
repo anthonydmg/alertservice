@@ -145,23 +145,25 @@
     
       function start_detection(){
         const switchBtn = document.getElementById('switchBtn');
-        
+        console.log('Iniciar deteccion');
         if (switchBtn.checked) {
-          
+          console.log('Init altimeter');
           $.post("/detection/initAltimeter", {}, function(response){
             
             console.log("Respuesta del servidor:", response);
             alture0 = response["alture0"]
             if (alture0 != null){
               print("Alture0:", alture0)
+              console.log('Start')
               $.post("/detection/start", {})
             }else{
               alert("Algo salio ejecutar nuevamente");
             }
           })
-          console.log('Switch activado');
+          
           // Aquí puedes agregar código adicional para realizar acciones cuando el switch esté activado
         }else{
+          console.log('Start')
           $.post("/detection/start", {})
         }
         
