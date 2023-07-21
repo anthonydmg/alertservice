@@ -28,6 +28,6 @@ def status_fire_detection():
     return jsonify({ "running": running}), 200
 
 @detection.route("/detection/initAltimeter", methods = ["POST"])
-def stop_fire_detection():
-    controllerFFD.run_initialize_altimeter()
-    return jsonify(), 200
+def initAltimeter():
+    alture0 = controllerFFD.run_initialize_altimeter()
+    return jsonify({"alture0": alture0}), 200

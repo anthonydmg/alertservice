@@ -22,7 +22,7 @@ class ControllerFFD():
         while self.is_running():
             self.stop()
         
-        self.current_process = subprocess.Popen([PYTHON_INTERPRETER, self.script])
+        self.current_process = subprocess.Popen([PYTHON_INTERPRETER, self.script, "-s", "True"])
         print("current_process: ", self.current_process)    
     
     def run_initialize_altimeter(self):

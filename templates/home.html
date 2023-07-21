@@ -28,9 +28,15 @@
         <div class="text-center"> 
           <img src="/static/images/dronIcon.png" alt="drone" width="200" height="150">
           <h1 id = "titulo" style="margin-bottom: 30px"> Deteccion de Incendios no ha sido Iniciada </h1>
-          <button id="btn_run" class="btn btn-danger btn-lg">
+          <div  class="d-flex flex-row justify-content-center align-items-center">
+          <button id="btn_run" class="btn btn-danger btn-lg mr-2 pr-2">
             Iniciar Deteccion
           </button>
+          <div id= "switch" class="form-check form-switch">
+            <input class="form-check-input" type="checkbox" id="flexSwitchCheckDefault" onclick="toggleSwitch()">
+            <label class="form-check-label" for="flexSwitchCheckDefault"> Inicializar altitud de referencia</label>
+          </div>
+        </div>
         </div>
       </div>
     </div>
@@ -49,7 +55,7 @@
           $( "#alertBloack" ).remove()
           //$(".button_start" ).remove()
           $('#titulo').text('Deteccion de Incendios Iniciada')
-          $('#btn_run').text("Finalizar Detection")
+          $('#btn_run').text("Finalizar Deteccion")
           document.getElementById("btn_run").removeEventListener("click", start_detection)
           document.getElementById("btn_run").addEventListener("click", stop_detection)
           
@@ -138,7 +144,17 @@
       })
     
       function start_detection(){
-        $.post("/detection/start", {})
+        const switchBtn = document.getElementById('switch');
+        if (switchBtn.checked) {
+          $.post("/detection/initAltimeter", {}, function(response){
+            console.log("Respuesta del servidor:", response);
+          })
+          console.log('Switch activado');
+          // Aquí puedes agregar código adicional para realizar acciones cuando el switch esté activado
+        }else{
+          $.post("/detection/start", {})
+        }
+        
       }
 
       function stop_detection(){
@@ -186,6 +202,16 @@
         }
       })
       
+      function toggleSwitch() {
+        const switchBtn = document.getElementById('switchBtn');
+        if (switchBtn.checked) {
+          console.log('Switch activado');
+          // Aquí puedes agregar código adicional para realizar acciones cuando el switch esté activado
+        } else {
+          console.log('Switch desactivado');
+          // Aquí puedes agregar código adicional para realizar acciones cuando el switch esté desactivado
+        }
+    }
       /* socket.on("pongStatus", function(){
             $( "#searching" ).remove()
             $( "#alertBloack" ).remove()
@@ -208,12 +234,12 @@
       }) */
 
 
-      setInterval(checkStatusDetection,5000)
+      /* setInterval(checkStatusDetection,5000)
 
       function checkStatusDetection(){
         console.log("Enviando solicitud de status...")
         socket.emit("pingStatus","status")
-      }
+      } */
 
 </script>
     
