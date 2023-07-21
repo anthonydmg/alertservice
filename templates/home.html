@@ -148,6 +148,13 @@
         if (switchBtn.checked) {
           $.post("/detection/initAltimeter", {}, function(response){
             console.log("Respuesta del servidor:", response);
+            alture0 = response["alture0"]
+            if (alture0 != null){
+              console.log("Inicalizar deteccion: ", response);
+            }else{
+              console.log("Algo salio ejecutar nuevamente: ", response);
+            }
+            
           })
           console.log('Switch activado');
           // Aquí puedes agregar código adicional para realizar acciones cuando el switch esté activado
